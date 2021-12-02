@@ -45,7 +45,15 @@ app.get('/api/get/loginDetails/:phone', (req, res) => {
             console.log(exists);
 
             if (result.length == 0) {
-                res.send("empty");
+                var JSON_Result = [
+                    {
+                        "ID": 0,
+                        "NAME": "unknown",
+                        "EMAIL": "unknown"
+                    }
+                ]
+
+                res.send(JSON_Result);
             } else{
                 res.send(result);
             }
