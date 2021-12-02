@@ -66,3 +66,29 @@ app.get('/api/get/loginDetails/:phone', (req, res) => {
         }
     })
 })
+
+app.post('/api/post/LoginDetails',(req,res) => {
+    
+    console.log("post");
+
+    console.log(req.body.phone);
+
+    let sql = ` INSERT INTO ACCOUNT_TABLE 
+                VALUES(NULL,'${req.body.phone}','${req.body.name}','${req.body.email}');`
+
+    db.query(sql, (err,result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(result.insertId);
+
+            var JSON_Result = [
+                {
+                    "ID": result.insertId,
+                }
+            ]
+
+            res.send(JSON_Result);
+        }
+    })
+})
