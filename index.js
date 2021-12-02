@@ -11,6 +11,12 @@ app.listen('5000', () => {
     console.log('server running at port 5000');
 });
 
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 var db = mysql.createConnection({
     host: "database-1.cxaqyyfsqya9.ap-south-1.rds.amazonaws.com",
     user: "admin",
