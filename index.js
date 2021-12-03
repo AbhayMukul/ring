@@ -82,11 +82,10 @@ app.post('/api/post/LoginDetails',(req,res) => {
         } else {
             console.log(result.insertId);
 
-            var JSON_Result = [
+            var JSON_Result = 
                 {
                     "ID": result.insertId,
                 }
-            ]
 
             res.send(JSON_Result);
         }
