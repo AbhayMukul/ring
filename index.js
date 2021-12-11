@@ -34,6 +34,23 @@ db.connect((err) => {
 })
 
 // api
+app.get('/api/get/groups/:id' , (req,res) => {
+    let sql = ` select GROUP_TABLE.G_ID,GROUP_TABLE.NAME,GROUP_TABLE.ADMIN_ID,ACCOUNT_TABLE.NAME AS ADMIN_NAME,GROUP_TABLE.PREFERENCE
+                FROM GROUP_TABLE,GROUP_MEMBER_TABLE,ACCOUNT_TABLE
+                WHERE GROUP_TABLE.G_ID = GROUP_MEMBER_TABLE.G_ID 
+                AND GROUP_TABLE.ADMIN_ID = ACCOUNT_TABLE.ID
+                AND GROUP_MEMBER_TABLE.M_ID = ${req.params.id}
+                ;`
+
+    db.query(sql,(err,result) => {
+        if(err) {
+            console.log(err);
+        }else{
+            res.send(result);
+        }
+    })
+})
+
 app.get('/api/get/loginDetails/:phone', (req, res) => {
     console.log(req.params.phone);
 
@@ -65,6 +82,54 @@ app.get('/api/get/loginDetails/:phone', (req, res) => {
             }
         }
     })
+})
+
+// POST API
+
+app.post('/api/post/requests',(req,res) => {
+    console.log("request to" , req.body.phone);
+
+    let sql = ` INSERT INTO REQUESTS_TABLE 
+                VALUES (${req.body.id},'${req.body.phone}','${req.body.date}','${req.body.time}','${req.body.timezone}');
+                ;`
+
+    db.query(sql,(err,result) => {
+        if(err){
+            console.log(err);
+
+            res.send({
+                "result" : 0,
+                "message" : "not requested"
+            });
+
+        }else{
+            res.send({
+                "result" : 1,
+                "message" : "requested"
+            });
+        }
+    })
+})
+
+app.get('/api/get/GetRequest/:phone',(req,res) => {
+
+    console.log(req.params.phone);
+    
+    let sql = ` SELECT GROUP_TABLE.NAME,REQUESTS_TABLE.TIME,REQUESTS_TABLE.DATE,REQUESTS_TABLE.TIMEZONE
+                FROM REQUESTS_TABLE,GROUP_TABLE
+                WHERE REQUESTS_TABLE.USER_PHONE = '${req.params.phone}'
+                AND REQUESTS_TABLE.G_ID = GROUP_TABLE.G_ID;
+                ;`
+
+    db.query(sql,(err,result) => {
+        if(err){
+            console.log(err);
+        }else{
+            console.log(result);
+            res.send(result);
+        }
+    })
+
 })
 
 app.post('/api/post/LoginDetails',(req,res) => {
