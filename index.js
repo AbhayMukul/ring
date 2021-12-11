@@ -33,6 +33,27 @@ db.connect((err) => {
     }
 })
 
+app.get('/api/get/members/:G_ID&:M_ID',(req,res) => {
+
+    // console.log(req.params.G_ID);
+    // console.log(req.params.M_ID);
+
+    let sql = ` select ACCOUNT_TABLE.NAME,ACCOUNT_TABLE.PHONE
+                FROM ACCOUNT_TABLE,GROUP_MEMBER_TABLE
+                WHERE ACCOUNT_TABLE.ID = GROUP_MEMBER_TABLE.M_ID
+                AND GROUP_MEMBER_TABLE.G_ID = ${req.params.G_ID}
+                AND GROUP_MEMBER_TABLE.M_ID != ${req.params.M_ID}
+                ;`
+
+    db.query(sql,(err,result) => {
+        if(err){
+            console.log(err);
+        }else{
+            res.send(result);
+        }
+    })
+})
+
 // api
 app.get('/api/get/groups/:id' , (req,res) => {
     let sql = ` select GROUP_TABLE.G_ID,GROUP_TABLE.NAME,GROUP_TABLE.ADMIN_ID,ACCOUNT_TABLE.NAME AS ADMIN_NAME,GROUP_TABLE.PREFERENCE
@@ -99,7 +120,8 @@ app.post('/api/post/requests',(req,res) => {
 
             res.send({
                 "result" : 0,
-                "message" : "not requested"
+                "message" : "not requested",
+                "server" : "result"
             });
 
         }else{
