@@ -38,7 +38,7 @@ app.get('/api/get/members/:G_ID&:M_ID',(req,res) => {
     // console.log(req.params.G_ID);
     // console.log(req.params.M_ID);
 
-    let sql = ` select ACCOUNT_TABLE.NAME,ACCOUNT_TABLE.PHONE
+    let sql = ` select ACCOUNT_TABLE.NAME,ACCOUNT_TABLE.PHONE,GROUP_MEMBER_TABLE.M_ID
                 FROM ACCOUNT_TABLE,GROUP_MEMBER_TABLE
                 WHERE ACCOUNT_TABLE.ID = GROUP_MEMBER_TABLE.M_ID
                 AND GROUP_MEMBER_TABLE.G_ID = ${req.params.G_ID}
