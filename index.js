@@ -106,7 +106,6 @@ app.get('/api/get/loginDetails/:phone', (req, res) => {
 })
 
 // POST API
-
 app.post('/api/post/requests',(req,res) => {
     console.log("request to" , req.body.phone);
 
@@ -121,7 +120,7 @@ app.post('/api/post/requests',(req,res) => {
             res.send({
                 "result" : 0,
                 "message" : "not requested",
-                "server" : "result"
+                "server" : err.code
             });
 
         }else{
